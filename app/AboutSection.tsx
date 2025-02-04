@@ -22,7 +22,7 @@ const AboutSection = () => {
         <div className="xl:w-1/2 aspect-square flex flex-col justify-between bg-white border-[1px] border-gray-200 rounded-2xl p-10">
           <h2 className="text-4xl font-normal text-integrayellow">Why We Stand Out from the Competition</h2>
           <div className="text-lg font-sans font-light text-black tracking-tight ">
-            When you work with us, you're not just hiring consultants — you&apos;re gaining a dedicated partner in your business journey. We&apos;re not interested in offering generic advice. Instead, we focus on practical, tailored strategies that move your business forward in the real world. Our team is hands-on, engaged, and committed to your success, from start to finish.<br></br><br></br>
+            When you work with us, you&apos;re not just hiring consultants — you&apos;re gaining a dedicated partner in your business journey. We&apos;re not interested in offering generic advice. Instead, we focus on practical, tailored strategies that move your business forward in the real world. Our team is hands-on, engaged, and committed to your success, from start to finish.<br></br><br></br>
             Choosing us means choosing a partner who is fully invested in your success. Our team brings diverse expertise, a hands-on mindset, and an unwavering commitment to your business’s long-term vision.
 
           </div>

@@ -212,10 +212,28 @@ const menuData = [
   },
 ];
 
+// Add these type definitions at the top of the file, after the imports
+interface Tab {
+  name: string;
+  content: string;
+  image: string;
+  route: string;
+}
+
+interface SubCategory {
+  name: string;
+  heading: string;
+  subheading: string;
+  tabs?: Tab[];
+  directDisplay?: boolean;
+  displayImage?: string;
+  displayRoute?: string;
+}
+
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
-  const [activeSub, setActiveSub] = useState<{ name: string; heading: string; subheading: string; tabs: any[] } | null>(null);
-  const [activeSection, setActiveSection] = useState<{ name: string; content: string; image: string; route: string } | null>(null);
+  const [activeSub, setActiveSub] = useState<SubCategory | null>(null);
+  const [activeSection, setActiveSection] = useState<Tab | null>(null);
   const [activeStandalone, setActiveStandalone] = useState<{ heading: string; subheading: string; displayImage: string; displayRoute: string } | null>(null);
 
   return (
@@ -310,7 +328,7 @@ const Header = () => {
               </div>
               <div className="p-6">
                 <div className="grid grid-cols-2 gap-4">
-                  {activeSub.tabs.map((tab: any, idx: number) => (
+                  {activeSub.tabs.map((tab: Tab, idx: number) => (
                     <div
                       key={idx}
                       className={`py-2 px-4 cursor-pointer flex justify-between items-center hover:bg-gray-100 transition-all ${

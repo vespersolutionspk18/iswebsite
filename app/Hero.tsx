@@ -23,11 +23,11 @@ const Hero = () => {
         filter: "blur(0px)",
       },
       {
-        duration: 0.5, // Duration of the animation
-        delay: stagger(0.2), // Stagger delay for each word
+        duration: 0.5,
+        delay: stagger(0.2),
       }
     );
-  }, [scope.current]);
+  }, [animate]); // Add animate to the dependency array
 
   const renderWords = () => {
     return (
