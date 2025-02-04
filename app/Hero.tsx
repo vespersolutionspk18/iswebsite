@@ -13,7 +13,7 @@ const Hero = () => {
   const words = "Empowering Excellence through Management Consulting";
 
   // Split words for rendering
-  let wordsArray = words.split(" ");
+  const wordsArray = words.split(" ");
 
   useEffect(() => {
     animate(

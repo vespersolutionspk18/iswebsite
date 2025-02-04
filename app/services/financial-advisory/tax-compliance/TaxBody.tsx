@@ -158,7 +158,7 @@ const TaxBody = () => {
               <div className="">
                 <div className=" flex flex-col gap-5">
                   <p className="text-lg text-black">
-                    Integra's services are designed to empower businesses in an
+                    Integra&apos;s services are designed to empower businesses in an
                     increasingly complex regulatory environment. With a focus on
                     precision, strategy, and innovation, we offer a seamless
                     solution to managing tax obligations across sales and income

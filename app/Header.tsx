@@ -5,6 +5,7 @@ import Link from "next/link";
 import { IoIosMenu, IoIosClose } from "react-icons/io";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import ArrowButton from "@/components/ui/ArrowButton";
+import Image from 'next/image'; // Import the Image component from next/image
 
 const menuData = [
   {
@@ -164,7 +165,7 @@ const menuData = [
     
     subCategories: [
       {
-        name: "About Integra",
+        name: "About Integra Strategy",
         heading: "About Integra",
         subheading: "Helping businesses thrive in dynamic markets.",
         directDisplay: true, // Add this property
@@ -212,10 +213,10 @@ const menuData = [
 ];
 
 const Header = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [activeSub, setActiveSub] = useState<any>(null);
-  const [activeSection, setActiveSection] = useState<any>(null);
-  const [activeStandalone, setActiveStandalone] = useState<any>(null);
+  const [menuOpen, setMenuOpen] = useState<boolean>(false);
+  const [activeSub, setActiveSub] = useState<{ name: string; heading: string; subheading: string; tabs: any[] } | null>(null);
+  const [activeSection, setActiveSection] = useState<{ name: string; content: string; image: string; route: string } | null>(null);
+  const [activeStandalone, setActiveStandalone] = useState<{ heading: string; subheading: string; displayImage: string; displayRoute: string } | null>(null);
 
   return (
     <div>
@@ -330,10 +331,12 @@ const Header = () => {
             <div className={`w-[35%] font-sans border-l border-gray-300 p-6 ${!activeSub && 'ml-[65%]'}`}>
               {activeStandalone && (
                 <>
-                  <img
+                  <Image
                     src={activeStandalone.displayImage}
                     alt={activeStandalone.heading}
                     className="rounded-xl w-full h-64 object-cover"
+                    width={500} // Specify width
+                    height={256} // Specify height
                   />
                   <h2 className="text-3xl mt-5 font-sans font-light">{activeStandalone.heading}</h2>
                   <p className="mt-5 text-black">{activeStandalone.subheading}</p>
@@ -348,10 +351,12 @@ const Header = () => {
               )}
               {activeSection && (
                 <>
-                  <img
+                  <Image
                     src={activeSection.image}
                     alt={activeSection.name}
                     className="rounded-xl w-full h-64 object-cover"
+                    width={500} // Specify width
+                    height={256} // Specify height
                   />
                   <h2 className="text-3xl mt-5 font-sans font-light">{activeSection.name}</h2>
                   <p className="mt-5 text-black">{activeSection.content}</p>

@@ -1,7 +1,6 @@
 import React from 'react'
-import IntegraFooterLogo from "@/public/assets/integra-logo-white.svg"; 
 import { Separator } from '@/components/ui/separator';
-import Link from 'next/link';
+
 
 const Footer = () => {
   return (
