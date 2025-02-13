@@ -234,17 +234,7 @@ const Header = () => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [activeSub, setActiveSub] = useState<SubCategory | null>(null);
   const [activeSection, setActiveSection] = useState<Tab | null>(null);
-  // Add this interface with the existing interfaces
-  interface StandaloneSection {
-    title: string;
-    heading: string;
-    subheading: string;
-    displayImage: string;
-    displayRoute: string;
-    isTab: boolean;
-  }
-  // Update the activeStandalone state type
-  const [activeStandalone, setActiveStandalone] = useState<StandaloneSection | null>(null);
+  const [activeStandalone, setActiveStandalone] = useState<{ heading: string; subheading: string; displayImage: string; displayRoute: string } | null>(null);
 
   return (
     <div>
