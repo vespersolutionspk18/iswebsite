@@ -230,18 +230,20 @@ interface SubCategory {
   displayRoute?: string;
 }
 
-interface StandaloneSection {
-  title: string;
-  heading: string;
-  subheading: string;
-  displayImage: string;
-  displayRoute: string;
-  isTab: boolean;
-}
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [activeSub, setActiveSub] = useState<SubCategory | null>(null);
   const [activeSection, setActiveSection] = useState<Tab | null>(null);
+  // Add this interface with the existing interfaces
+  interface StandaloneSection {
+    title: string;
+    heading: string;
+    subheading: string;
+    displayImage: string;
+    displayRoute: string;
+    isTab: boolean;
+  }
+  // Update the activeStandalone state type
   const [activeStandalone, setActiveStandalone] = useState<StandaloneSection | null>(null);
 
   return (
@@ -282,11 +284,17 @@ const Header = () => {
                 <button
                   className="text-left text-2xl font-light text-gray-800 flex justify-between items-center w-full hover:bg-gray-100 transition-all"
                   onClick={() => {
-                    if (section.isTab && 'heading' in section) {
-                      setActiveStandalone(section as StandaloneSection);
-                      setActiveSub(null);
-                      setActiveSection(null);
-                    }
+                    const standaloneSection: StandaloneSection = {
+                      title: section.title,
+                      heading: section.heading || '', // Ensure heading is a string
+                      subheading: section.subheading || '', // Ensure subheading is a string
+                      displayImage: section.displayImage || '', // Ensure displayImage is a string
+                      displayRoute: section.displayRoute || '', // Ensure displayRoute is a string
+                      isTab: section.isTab,
+                    };
+                    setActiveStandalone(standaloneSection); // Set active standalone section
+                    setActiveSub(null); // Reset Section X
+                    setActiveSection(null); // Reset Section Y
                   }}
                 >
                   {section.title}
