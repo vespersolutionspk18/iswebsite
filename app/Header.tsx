@@ -5,47 +5,9 @@ import Link from "next/link";
 import { IoIosMenu, IoIosClose } from "react-icons/io";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import ArrowButton from "@/components/ui/ArrowButton";
-import Image from 'next/image';
+import Image from 'next/image'; // Import the Image component from next/image
 
-// Define interfaces outside the component for clarity
-interface Tab {
-  name: string;
-  content: string;
-  image: string;
-  route: string;
-}
-
-interface SubCategory {
-  name: string;
-  heading: string;
-  subheading: string;
-  tabs?: Tab[];
-  directDisplay?: boolean;
-  displayImage?: string;
-  displayRoute?: string;
-}
-
-interface StandaloneSection {
-  title: string;
-  heading: string;
-  subheading: string;
-  displayImage: string;
-  displayRoute: string;
-  isTab: boolean;
-}
-
-interface MenuItem {
-  title: string;
-  subCategories?: SubCategory[];
-  heading?: string;
-  subheading?: string;
-  displayImage?: string;
-  displayRoute?: string;
-  isTab: boolean;
-}
-
-// Explicitly type menuData with MenuItem[]
-const menuData: MenuItem[] = [
+const menuData = [
   {
     title: "Our Services",
     subCategories: [
@@ -250,11 +212,29 @@ const menuData: MenuItem[] = [
   },
 ];
 
+// Add these type definitions at the top of the file, after the imports
+interface Tab {
+  name: string;
+  content: string;
+  image: string;
+  route: string;
+}
+
+interface SubCategory {
+  name: string;
+  heading: string;
+  subheading: string;
+  tabs?: Tab[];
+  directDisplay?: boolean;
+  displayImage?: string;
+  displayRoute?: string;
+}
+
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [activeSub, setActiveSub] = useState<SubCategory | null>(null);
   const [activeSection, setActiveSection] = useState<Tab | null>(null);
-  const [activeStandalone, setActiveStandalone] = useState<StandaloneSection | null>(null);
+  const [activeStandalone, setActiveStandalone] = useState<{ heading: string; subheading: string; displayImage: string; displayRoute: string } | null>(null);
 
   return (
     <div>
@@ -294,9 +274,9 @@ const Header = () => {
                 <button
                   className="text-left text-2xl font-light text-gray-800 flex justify-between items-center w-full hover:bg-gray-100 transition-all"
                   onClick={() => {
-                    setActiveStandalone(section as StandaloneSection);
-                    setActiveSub(null);
-                    setActiveSection(null);
+                    setActiveStandalone(section); // Set active standalone section
+                    setActiveSub(null); // Reset Section X
+                    setActiveSection(null); // Reset Section Y
                   }}
                 >
                   {section.title}
@@ -307,7 +287,7 @@ const Header = () => {
               )}
 
               {/* Render Subsections for Sections with Subcategories */}
-              {section.subCategories && section.subCategories.length > 0 && (
+              {section.subCategories?.length > 0 && (
                 <div className="mt-2 flex flex-col">
                   {section.subCategories.map((sub, idx) => (
                     <button
@@ -317,20 +297,12 @@ const Header = () => {
                       }`}
                       onClick={() => {
                         if (sub.directDisplay) {
-                          const standaloneSection: StandaloneSection = {
-                            title: sub.name,
-                            heading: sub.heading,
-                            subheading: sub.subheading,
-                            displayImage: sub.displayImage || '',
-                            displayRoute: sub.displayRoute || '',
-                            isTab: false,
-                          };
-                          setActiveStandalone(standaloneSection);
+                          setActiveStandalone(sub);
                           setActiveSub(null);
                           setActiveSection(null);
                         } else {
                           setActiveSub(sub);
-                          setActiveSection(sub.tabs ? sub.tabs[0] : null);
+                          setActiveSection(sub.tabs[0]);
                           setActiveStandalone(null);
                         }
                       }}
@@ -356,7 +328,7 @@ const Header = () => {
               </div>
               <div className="p-6">
                 <div className="grid grid-cols-2 gap-4">
-                  {activeSub.tabs && activeSub.tabs.map((tab: Tab, idx: number) => (
+                  {activeSub.tabs.map((tab: Tab, idx: number) => (
                     <div
                       key={idx}
                       className={`py-2 px-4 cursor-pointer flex justify-between items-center hover:bg-gray-100 transition-all ${
@@ -381,8 +353,8 @@ const Header = () => {
                     src={activeStandalone.displayImage}
                     alt={activeStandalone.heading}
                     className="rounded-xl w-full h-64 object-cover"
-                    width={500}
-                    height={256}
+                    width={500} // Specify width
+                    height={256} // Specify height
                   />
                   <h2 className="text-3xl mt-5 font-sans font-light">{activeStandalone.heading}</h2>
                   <p className="mt-5 text-black">{activeStandalone.subheading}</p>
@@ -401,8 +373,8 @@ const Header = () => {
                     src={activeSection.image}
                     alt={activeSection.name}
                     className="rounded-xl w-full h-64 object-cover"
-                    width={500}
-                    height={256}
+                    width={500} // Specify width
+                    height={256} // Specify height
                   />
                   <h2 className="text-3xl mt-5 font-sans font-light">{activeSection.name}</h2>
                   <p className="mt-5 text-black">{activeSection.content}</p>
