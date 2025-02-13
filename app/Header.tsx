@@ -305,7 +305,7 @@ const Header = () => {
               )}
 
               {/* Render Subsections for Sections with Subcategories */}
-              {section.subCategories?.length > 0 && (
+              {(section.subCategories || []).length > 0 && (
                 <div className="mt-2 flex flex-col">
                   {section.subCategories.map((sub, idx) => (
                     <button
@@ -315,12 +315,20 @@ const Header = () => {
                       }`}
                       onClick={() => {
                         if (sub.directDisplay) {
-                          setActiveStandalone(sub);
+                          const standaloneSection: StandaloneSection = {
+                            title: sub.name,
+                            heading: sub.heading,
+                            subheading: sub.subheading,
+                            displayImage: sub.displayImage || '',
+                            displayRoute: sub.displayRoute || '',
+                            isTab: false,
+                          };
+                          setActiveStandalone(standaloneSection);
                           setActiveSub(null);
                           setActiveSection(null);
                         } else {
                           setActiveSub(sub);
-                          setActiveSection(sub.tabs[0]);
+                          setActiveSection(sub.tabs ? sub.tabs[0] : null);
                           setActiveStandalone(null);
                         }
                       }}
