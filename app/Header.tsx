@@ -7,7 +7,47 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 import ArrowButton from "@/components/ui/ArrowButton";
 import Image from 'next/image'; // Import the Image component from next/image
 
-const menuData = [
+
+
+// Add these type definitions at the top of the file, after the imports
+interface Tab {
+  name: string;
+  content: string;
+  image: string;
+  route: string;
+}
+
+interface SubCategory {
+  name: string;
+  heading: string;
+  subheading: string;
+  tabs?: Tab[];
+  directDisplay?: boolean;
+  displayImage?: string;
+  displayRoute?: string;
+}
+
+interface StandaloneSection {
+  title: string;
+  heading: string;
+  subheading: string;
+  displayImage: string;
+  displayRoute: string;
+  isTab: boolean;
+}
+
+interface MenuItem {
+  title: string;
+  subCategories?: SubCategory[];
+  heading?: string;
+  subheading?: string;
+  displayImage?: string;
+  displayRoute?: string;
+  isTab: boolean;
+}
+
+// Explicitly type menuData with MenuItem[]
+const menuData: MenuItem[] = [
   {
     title: "Our Services",
     subCategories: [
