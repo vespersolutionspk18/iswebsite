@@ -359,7 +359,7 @@ const Header = () => {
               </div>
               <div className="p-6">
                 <div className="grid grid-cols-2 gap-4">
-                  {activeSub.tabs.map((tab: Tab, idx: number) => (
+                  {activeSub.tabs && activeSub.tabs.map((tab: Tab, idx: number) => (
                     <div
                       key={idx}
                       className={`py-2 px-4 cursor-pointer flex justify-between items-center hover:bg-gray-100 transition-all ${
