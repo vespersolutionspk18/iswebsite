@@ -45,7 +45,7 @@ interface MenuItem {
 }
 
 // Explicitly type menuData with MenuItem[]
-const menuData = [
+const menuData: MenuItem[] = [
   {
     title: "Our Services",
     subCategories: [
