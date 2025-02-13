@@ -7,8 +7,7 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 import ArrowButton from "@/components/ui/ArrowButton";
 import Image from 'next/image'; // Import the Image component from next/image
 
-// Define menuData with MenuItem type
-const menuData: MenuItem[] = [
+const menuData = [
   {
     title: "Our Services",
     subCategories: [
@@ -240,7 +239,6 @@ interface StandaloneSection {
   isTab: boolean;
 }
 
-// Add this with your other interfaces
 interface MenuItem {
   title: string;
   subCategories?: SubCategory[];
@@ -295,11 +293,9 @@ const Header = () => {
                 <button
                   className="text-left text-2xl font-light text-gray-800 flex justify-between items-center w-full hover:bg-gray-100 transition-all"
                   onClick={() => {
-                    if (section.isTab && 'heading' in section) {
-                      setActiveStandalone(section as StandaloneSection);
-                      setActiveSub(null);
-                      setActiveSection(null);
-                    }
+                    setActiveStandalone(section as StandaloneSection);
+                    setActiveSub(null);
+                    setActiveSection(null);
                   }}
                 >
                   {section.title}
@@ -310,7 +306,7 @@ const Header = () => {
               )}
 
               {/* Render Subsections for Sections with Subcategories */}
-              {section.subCategories && section.subCategories.length > 0 && (
+              {section.subCategories?.length > 0 && (
                 <div className="mt-2 flex flex-col">
                   {section.subCategories.map((sub, idx) => (
                     <button
@@ -326,14 +322,14 @@ const Header = () => {
                             subheading: sub.subheading,
                             displayImage: sub.displayImage || '',
                             displayRoute: sub.displayRoute || '',
-                            isTab: false, // Assuming subcategories are not standalone tabs
+                            isTab: false,
                           };
                           setActiveStandalone(standaloneSection);
                           setActiveSub(null);
                           setActiveSection(null);
                         } else {
                           setActiveSub(sub);
-                          setActiveSection(sub.tabs ? sub.tabs[0] : null); // Ensure sub.tabs is defined
+                          setActiveSection(sub.tabs ? sub.tabs[0] : null);
                           setActiveStandalone(null);
                         }
                       }}
@@ -384,8 +380,8 @@ const Header = () => {
                     src={activeStandalone.displayImage}
                     alt={activeStandalone.heading}
                     className="rounded-xl w-full h-64 object-cover"
-                    width={500} // Specify width
-                    height={256} // Specify height
+                    width={500}
+                    height={256}
                   />
                   <h2 className="text-3xl mt-5 font-sans font-light">{activeStandalone.heading}</h2>
                   <p className="mt-5 text-black">{activeStandalone.subheading}</p>
@@ -404,8 +400,8 @@ const Header = () => {
                     src={activeSection.image}
                     alt={activeSection.name}
                     className="rounded-xl w-full h-64 object-cover"
-                    width={500} // Specify width
-                    height={256} // Specify height
+                    width={500}
+                    height={256}
                   />
                   <h2 className="text-3xl mt-5 font-sans font-light">{activeSection.name}</h2>
                   <p className="mt-5 text-black">{activeSection.content}</p>
