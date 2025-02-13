@@ -243,6 +243,11 @@ interface DirectSubCategory extends BaseSubCategory {
 
 type SubCategory = TabSubCategory | DirectSubCategory;
 
+// Add this type guard function after your interface definitions
+function isDirectSubCategory(sub: SubCategory): sub is DirectSubCategory {
+  return 'directDisplay' in sub;
+}
+
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [activeSub, setActiveSub] = useState<SubCategory | null>(null);
