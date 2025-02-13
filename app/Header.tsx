@@ -346,7 +346,7 @@ const Header = () => {
               )}
 
               {/* Render Subsections for Sections with Subcategories */}
-              {section.subCategories?.length > 0 && (
+              {section.subCategories && section.subCategories.length > 0 && (
                 <div className="mt-2 flex flex-col">
                   {section.subCategories.map((sub, idx) => (
                     <button
