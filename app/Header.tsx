@@ -320,7 +320,6 @@ const Header = () => {
                       }`}
                       onClick={() => {
                         if (sub.directDisplay) {
-                          // Ensure sub has all properties of StandaloneSection
                           const standaloneSection: StandaloneSection = {
                             title: sub.name,
                             heading: sub.heading,
@@ -334,7 +333,7 @@ const Header = () => {
                           setActiveSection(null);
                         } else {
                           setActiveSub(sub);
-                          setActiveSection(sub.tabs?.[0]);
+                          setActiveSection(sub.tabs ? sub.tabs[0] : null); // Ensure sub.tabs is defined
                           setActiveStandalone(null);
                         }
                       }}
