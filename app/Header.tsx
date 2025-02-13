@@ -7,8 +7,7 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 import ArrowButton from "@/components/ui/ArrowButton";
 import Image from 'next/image'; // Import the Image component from next/image
 
-// ...
-// Update menuData declaration to use MenuItem type
+// Define menuData with MenuItem type
 const menuData: MenuItem[] = [
   {
     title: "Our Services",
