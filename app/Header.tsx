@@ -5,11 +5,9 @@ import Link from "next/link";
 import { IoIosMenu, IoIosClose } from "react-icons/io";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import ArrowButton from "@/components/ui/ArrowButton";
-import Image from 'next/image'; // Import the Image component from next/image
+import Image from 'next/image';
 
-
-
-// Add these type definitions at the top of the file, after the imports
+// Define interfaces outside the component for clarity
 interface Tab {
   name: string;
   content: string;
@@ -47,7 +45,7 @@ interface MenuItem {
 }
 
 // Explicitly type menuData with MenuItem[]
-const menuData: MenuItem[] = [
+const menuData = [
   {
     title: "Our Services",
     subCategories: [
@@ -142,7 +140,7 @@ const menuData: MenuItem[] = [
         heading: "Digital & Tech",
         subheading: "Enabling Technological Solutions for Businesses.",
         tabs: [
-          
+
           {
             name: "System Design & Implementation",
             content: "Systems That Deliver. Design and implement robust systems for optimal business performance.",
@@ -202,7 +200,7 @@ const menuData: MenuItem[] = [
   }, */
   {
     title: "Our Company",
-    
+
     subCategories: [
       {
         name: "About Integra Strategy",
@@ -211,7 +209,7 @@ const menuData: MenuItem[] = [
         directDisplay: true, // Add this property
         displayImage: "/assets/management-consulting.jpg", // Add display image
         displayRoute: "/about", // Add direct route
-        
+
       },
       {
         name: "Why Choose Us",
@@ -220,7 +218,7 @@ const menuData: MenuItem[] = [
         directDisplay: true, // Add this property
         displayImage: "/assets/lights.jpg", // Add display image
         displayRoute: "/about/why-choose-us", // Add direct route
-        
+
       },
       {
         name: "Our Approach & Methodology",
@@ -229,7 +227,7 @@ const menuData: MenuItem[] = [
         directDisplay: true, // Add this property
         displayImage: "/assets/post1.jpg", // Add display image
         displayRoute: "/about/approach-methodology", // Add direct route
-        
+
       },
     ],
     isTab: false,
@@ -251,43 +249,6 @@ const menuData: MenuItem[] = [
     isTab: true,
   },
 ];
-
-// Add these type definitions at the top of the file, after the imports
-interface Tab {
-  name: string;
-  content: string;
-  image: string;
-  route: string;
-}
-
-interface SubCategory {
-  name: string;
-  heading: string;
-  subheading: string;
-  tabs?: Tab[];
-  directDisplay?: boolean;
-  displayImage?: string;
-  displayRoute?: string;
-}
-
-interface StandaloneSection {
-  title: string;
-  heading: string;
-  subheading: string;
-  displayImage: string;
-  displayRoute: string;
-  isTab: boolean;
-}
-
-interface MenuItem {
-  title: string;
-  subCategories?: SubCategory[];
-  heading?: string;
-  subheading?: string;
-  displayImage?: string;
-  displayRoute?: string;
-  isTab: boolean;
-}
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
