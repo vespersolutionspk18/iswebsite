@@ -220,15 +220,28 @@ interface Tab {
   route: string;
 }
 
-interface SubCategory {
+// Update the SubCategory interface to use discriminated union type
+interface BaseSubCategory {
   name: string;
   heading: string;
   subheading: string;
-  tabs?: Tab[];
-  directDisplay?: boolean;
-  displayImage?: string;
-  displayRoute?: string;
 }
+
+interface TabSubCategory extends BaseSubCategory {
+  tabs: Tab[];
+  directDisplay?: never;
+  displayImage?: never;
+  displayRoute?: never;
+}
+
+interface DirectSubCategory extends BaseSubCategory {
+  directDisplay: true;
+  displayImage: string;
+  displayRoute: string;
+  tabs?: never;
+}
+
+type SubCategory = TabSubCategory | DirectSubCategory;
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
