@@ -311,9 +311,9 @@ const Header = () => {
               )}
 
               {/* Render Subsections for Sections with Subcategories */}
-              {section.subCategories?.length > 0 && (
+              {section.subCategories && section.subCategories.length > 0 && (
                 <div className="mt-2 flex flex-col">
-                  {section.subCategories?.map((sub, idx) => (
+                  {section.subCategories.map((sub, idx) => (
                     <button
                       key={idx}
                       className={`text-left font-light py-2 px-4 text-gray-700 flex justify-between items-center hover:bg-gray-100 transition-all ${
