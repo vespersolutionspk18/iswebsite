@@ -230,21 +230,19 @@ interface SubCategory {
   displayRoute?: string;
 }
 
+interface StandaloneSection {
+  title: string;
+  heading: string;
+  subheading: string;
+  displayImage: string;
+  displayRoute: string;
+  isTab: boolean;
+}
+
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [activeSub, setActiveSub] = useState<SubCategory | null>(null);
   const [activeSection, setActiveSection] = useState<Tab | null>(null);
-  // Add this interface with the existing interfaces
-  interface StandaloneSection {
-    title: string;
-    heading: string;
-    subheading: string;
-    displayImage: string;
-    displayRoute: string;
-    isTab: boolean;
-  }
-
-  // Update the activeStandalone state type
   const [activeStandalone, setActiveStandalone] = useState<StandaloneSection | null>(null);
 
   return (
@@ -285,9 +283,11 @@ const Header = () => {
                 <button
                   className="text-left text-2xl font-light text-gray-800 flex justify-between items-center w-full hover:bg-gray-100 transition-all"
                   onClick={() => {
-                    setActiveStandalone(section); // Set active standalone section
-                    setActiveSub(null); // Reset Section X
-                    setActiveSection(null); // Reset Section Y
+                    if (section.isTab && 'heading' in section) {
+                      setActiveStandalone(section as StandaloneSection);
+                      setActiveSub(null);
+                      setActiveSection(null);
+                    }
                   }}
                 >
                   {section.title}
