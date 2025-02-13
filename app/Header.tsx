@@ -310,7 +310,6 @@ const Header = () => {
                 <h2 className="text-2xl font-light text-gray-800">{section.title}</h2>
               )}
 
-              // Update the section.subCategories check
               {/* Render Subsections for Sections with Subcategories */}
               {section.subCategories?.length > 0 && (
                 <div className="mt-2 flex flex-col">
