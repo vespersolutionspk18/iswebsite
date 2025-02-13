@@ -7,7 +7,9 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 import ArrowButton from "@/components/ui/ArrowButton";
 import Image from 'next/image'; // Import the Image component from next/image
 
-const menuData = [
+// ...
+// Update menuData declaration to use MenuItem type
+const menuData: MenuItem[] = [
   {
     title: "Our Services",
     subCategories: [
@@ -230,20 +232,30 @@ interface SubCategory {
   displayRoute?: string;
 }
 
+interface StandaloneSection {
+  title: string;
+  heading: string;
+  subheading: string;
+  displayImage: string;
+  displayRoute: string;
+  isTab: boolean;
+}
+
+// Add this with your other interfaces
+interface MenuItem {
+  title: string;
+  subCategories?: SubCategory[];
+  heading?: string;
+  subheading?: string;
+  displayImage?: string;
+  displayRoute?: string;
+  isTab: boolean;
+}
+
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [activeSub, setActiveSub] = useState<SubCategory | null>(null);
   const [activeSection, setActiveSection] = useState<Tab | null>(null);
-  // Add this interface with the existing interfaces
-  interface StandaloneSection {
-    title: string;
-    heading: string;
-    subheading: string;
-    displayImage: string;
-    displayRoute: string;
-    isTab: boolean;
-  }
-  // Update the activeStandalone state type
   const [activeStandalone, setActiveStandalone] = useState<StandaloneSection | null>(null);
 
   return (
@@ -284,9 +296,11 @@ const Header = () => {
                 <button
                   className="text-left text-2xl font-light text-gray-800 flex justify-between items-center w-full hover:bg-gray-100 transition-all"
                   onClick={() => {
-                    setActiveStandalone(section); // Set active standalone section
-                    setActiveSub(null); // Reset Section X
-                    setActiveSection(null); // Reset Section Y
+                    if (section.isTab && 'heading' in section) {
+                      setActiveStandalone(section as StandaloneSection);
+                      setActiveSub(null);
+                      setActiveSection(null);
+                    }
                   }}
                 >
                   {section.title}
@@ -296,10 +310,11 @@ const Header = () => {
                 <h2 className="text-2xl font-light text-gray-800">{section.title}</h2>
               )}
 
+              // Update the section.subCategories check
               {/* Render Subsections for Sections with Subcategories */}
               {section.subCategories?.length > 0 && (
                 <div className="mt-2 flex flex-col">
-                  {section.subCategories.map((sub, idx) => (
+                  {section.subCategories?.map((sub, idx) => (
                     <button
                       key={idx}
                       className={`text-left font-light py-2 px-4 text-gray-700 flex justify-between items-center hover:bg-gray-100 transition-all ${
@@ -312,7 +327,7 @@ const Header = () => {
                           setActiveSection(null);
                         } else {
                           setActiveSub(sub);
-                          setActiveSection(sub.tabs[0]);
+                          setActiveSection(sub.tabs?.[0]);
                           setActiveStandalone(null);
                         }
                       }}
