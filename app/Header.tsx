@@ -7,9 +7,7 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 import ArrowButton from "@/components/ui/ArrowButton";
 import Image from 'next/image'; // Import the Image component from next/image
 
-// ...
-// Update menuData declaration to use MenuItem type
-const menuData: MenuItem[] = [
+const menuData = [
   {
     title: "Our Services",
     subCategories: [
@@ -240,18 +238,6 @@ interface StandaloneSection {
   displayRoute: string;
   isTab: boolean;
 }
-
-// Add this with your other interfaces
-interface MenuItem {
-  title: string;
-  subCategories?: SubCategory[];
-  heading?: string;
-  subheading?: string;
-  displayImage?: string;
-  displayRoute?: string;
-  isTab: boolean;
-}
-
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [activeSub, setActiveSub] = useState<SubCategory | null>(null);
@@ -310,11 +296,10 @@ const Header = () => {
                 <h2 className="text-2xl font-light text-gray-800">{section.title}</h2>
               )}
 
-              // Update the section.subCategories check
               {/* Render Subsections for Sections with Subcategories */}
               {section.subCategories?.length > 0 && (
                 <div className="mt-2 flex flex-col">
-                  {section.subCategories?.map((sub, idx) => (
+                  {section.subCategories.map((sub, idx) => (
                     <button
                       key={idx}
                       className={`text-left font-light py-2 px-4 text-gray-700 flex justify-between items-center hover:bg-gray-100 transition-all ${
@@ -327,7 +312,7 @@ const Header = () => {
                           setActiveSection(null);
                         } else {
                           setActiveSub(sub);
-                          setActiveSection(sub.tabs?.[0]);
+                          setActiveSection(sub.tabs[0]);
                           setActiveStandalone(null);
                         }
                       }}
