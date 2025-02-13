@@ -320,7 +320,16 @@ const Header = () => {
                       }`}
                       onClick={() => {
                         if (sub.directDisplay) {
-                          setActiveStandalone(sub);
+                          // Ensure sub has all properties of StandaloneSection
+                          const standaloneSection: StandaloneSection = {
+                            title: sub.name,
+                            heading: sub.heading,
+                            subheading: sub.subheading,
+                            displayImage: sub.displayImage || '',
+                            displayRoute: sub.displayRoute || '',
+                            isTab: false, // Assuming subcategories are not standalone tabs
+                          };
+                          setActiveStandalone(standaloneSection);
                           setActiveSub(null);
                           setActiveSection(null);
                         } else {
