@@ -286,15 +286,15 @@ const Header = () => {
                   onClick={() => {
                     const standaloneSection: StandaloneSection = {
                       title: section.title,
-                      heading: section.heading || '', // Ensure heading is a string
-                      subheading: section.subheading || '', // Ensure subheading is a string
-                      displayImage: section.displayImage || '', // Ensure displayImage is a string
-                      displayRoute: section.displayRoute || '', // Ensure displayRoute is a string
+                      heading: section.heading || '',
+                      subheading: section.subheading || '',
+                      displayImage: section.displayImage || '',
+                      displayRoute: section.displayRoute || '',
                       isTab: section.isTab,
                     };
-                    setActiveStandalone(standaloneSection); // Set active standalone section
-                    setActiveSub(null); // Reset Section X
-                    setActiveSection(null); // Reset Section Y
+                    setActiveStandalone(standaloneSection);
+                    setActiveSub(null);
+                    setActiveSection(null);
                   }}
                 >
                   {section.title}
@@ -307,7 +307,7 @@ const Header = () => {
               {/* Render Subsections for Sections with Subcategories */}
               {(section.subCategories || []).length > 0 && (
                 <div className="mt-2 flex flex-col">
-                  {section.subCategories.map((sub, idx) => (
+                  {(section.subCategories || []).map((sub, idx) => (
                     <button
                       key={idx}
                       className={`text-left font-light py-2 px-4 text-gray-700 flex justify-between items-center hover:bg-gray-100 transition-all ${
@@ -315,20 +315,12 @@ const Header = () => {
                       }`}
                       onClick={() => {
                         if (sub.directDisplay) {
-                          const standaloneSection: StandaloneSection = {
-                            title: sub.name,
-                            heading: sub.heading,
-                            subheading: sub.subheading,
-                            displayImage: sub.displayImage || '',
-                            displayRoute: sub.displayRoute || '',
-                            isTab: false,
-                          };
-                          setActiveStandalone(standaloneSection);
+                          setActiveStandalone(sub);
                           setActiveSub(null);
                           setActiveSection(null);
                         } else {
                           setActiveSub(sub);
-                          setActiveSection(sub.tabs ? sub.tabs[0] : null);
+                          setActiveSection(sub.tabs?.[0] || null);
                           setActiveStandalone(null);
                         }
                       }}
