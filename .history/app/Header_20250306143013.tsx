@@ -162,30 +162,34 @@ const menuData = [
   }, */
   {
     title: "Our Company",
+
     subCategories: [
       {
         name: "About Integra Strategy",
         heading: "About Integra",
         subheading: "Helping businesses thrive in dynamic markets.",
-        directDisplay: true,
-        displayImage: "/assets/management-consulting.jpg",
-        displayRoute: "/about"
+        directDisplay: true, // Add this property
+        displayImage: "/assets/management-consulting.jpg", // Add display image
+        displayRoute: "/about", // Add direct route
+
       },
       {
         name: "Why Choose Us",
         heading: "Why Choose Us",
         subheading: "Discover what makes us stand out",
-        directDisplay: true,
-        displayImage: "/assets/lights.jpg",
-        displayRoute: "/about/why-choose-us"
+        directDisplay: true, // Add this property
+        displayImage: "/assets/lights.jpg", // Add display image
+        displayRoute: "/about/why-choose-us", // Add direct route
+
       },
       {
         name: "Our Approach & Methodology",
         heading: "Our Approach & Methodology",
         subheading: "Helping businesses thrive in dynamic markets.",
-        directDisplay: true,
-        displayImage: "/assets/post1.jpg",
-        displayRoute: "/about/approach-methodology"
+        directDisplay: true, // Add this property
+        displayImage: "/assets/post1.jpg", // Add display image
+        displayRoute: "/about/approach-methodology", // Add direct route
+
       },
     ],
     isTab: false,
