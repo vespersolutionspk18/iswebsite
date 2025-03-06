@@ -281,7 +281,7 @@ const Header = () => {
       <div
         className={`fixed top-16 left-0 w-full h-[calc(100vh-4rem)] bg-white transition-transform duration-300 ease-in-out ${
           menuOpen ? "translate-y-0" : "-translate-y-full"
-        } transform origin-top z-40 flex justify-between`}
+        } transform origin-top z-40 flex`}
       >
         <div className="font-sans w-1/4 border-r border-gray-300 flex flex-col">
           {menuOpen && menuData.map((section, index) => (
@@ -290,8 +290,6 @@ const Header = () => {
                 <button
                   className="text-left text-2xl font-light text-gray-800 flex justify-between items-center w-full hover:bg-gray-100 transition-all"
                   onClick={() => {
-                    setActiveSub(null);
-                    setActiveSection(null);
                     const standaloneSection: StandaloneSection = {
                       title: section.title,
                       heading: section.heading || '',
@@ -301,6 +299,8 @@ const Header = () => {
                       isTab: section.isTab,
                     };
                     setActiveStandalone(standaloneSection);
+                    setActiveSub(null);
+                    setActiveSection(null);
                   }}
                 >
                   {section.title}
@@ -350,9 +350,9 @@ const Header = () => {
         </div>
 
         {menuOpen && (activeSub || activeStandalone) && (
-          <div className="w-3/4 flex justify-end">
+          <div className="w-3/4 flex">
             {!isDirectSubCategory(activeSub) && activeSub && (
-              <div className="w-[65%] font-sans border-r border-gray-300">
+              <div className="w-[65%] font-sans">
                 <div className="border-b border-gray-300 p-6">
                   <h2 className="text-3xl font-light">{activeSub.heading}</h2>
                   <p className="text-black font-light">{activeSub.subheading}</p>
@@ -376,7 +376,7 @@ const Header = () => {
               </div>
             )}
 
-            <div className={`w-[35%] font-sans border-l border-gray-300 p-6`}>
+            <div className={`w-[35%] font-sans border-l border-gray-300 p-6 ${(!activeSub && !activeStandalone) ? 'ml-[65%]' : ''}`}>
               {activeStandalone && (
                 <>
                   <Image
