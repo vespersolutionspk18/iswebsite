@@ -28,7 +28,7 @@ interface TabSubCategory extends BaseSubCategory {
 }
 
 interface DirectSubCategory extends BaseSubCategory {
-  directDisplay: boolean;
+  directDisplay: true;
   displayImage: string;
   displayRoute: string;
   tabs?: never;
@@ -46,7 +46,7 @@ interface StandaloneSection {
 }
 
 function isDirectSubCategory(sub: SubCategory): sub is DirectSubCategory {
-  return 'directDisplay' in sub;
+  return 'directDisplay' in sub && sub.directDisplay === true;
 }
 
 const menuData = [
@@ -209,7 +209,7 @@ const menuData = [
         name: "About Integra Strategy",
         heading: "About Integra",
         subheading: "Helping businesses thrive in dynamic markets.",
-        directDisplay: true,
+        directDisplay: true as const,
         displayImage: "/assets/management-consulting.jpg",
         displayRoute: "/about"
       },
@@ -217,7 +217,7 @@ const menuData = [
         name: "Why Choose Us",
         heading: "Why Choose Us",
         subheading: "Discover what makes us stand out",
-        directDisplay: true,
+        directDisplay: true as const,
         displayImage: "/assets/lights.jpg",
         displayRoute: "/about/why-choose-us"
       },
@@ -225,7 +225,7 @@ const menuData = [
         name: "Our Approach & Methodology",
         heading: "Our Approach & Methodology",
         subheading: "Helping businesses thrive in dynamic markets.",
-        directDisplay: true,
+        directDisplay: true as const,
         displayImage: "/assets/post1.jpg",
         displayRoute: "/about/approach-methodology"
       },

@@ -176,7 +176,7 @@ const SerTabs = () => {
     setIsClient(true);
   }, []);
 
-  const handleClick = (id: string) => {
+  const handleClick = (id) => {
     setActiveTab(id);
   };
 

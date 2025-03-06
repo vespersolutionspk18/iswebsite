@@ -10,37 +10,35 @@ interface ArrowButtonProps {
   buttonText: string;
 }
 
-const buttonBaseStyles = "h-[44px] flex-row text-[16px] py-1 px-1 font-light rounded-full flex items-center justify-between transition-all duration-500 ease-in-out";
-
-const buttonVariantStyles = {
-  plain: "bg-white border-[1px] border-gray-300 text-gray-900 hover:bg-gray-700 hover:border-gray-700 hover:text-white",
-  filled: "bg-gray-700 border-[1px] border-gray-700 text-white hover:bg-[#ec8123] hover:border-[#ec8123]"
-};
-
-const arrowContainerStyles = {
-  plain: "bg-gray-700 rounded-full h-[36px] w-[36px] flex items-center justify-center transition-transform duration-500 ease-in-out group-hover:rotate-45 group-hover:bg-[#ec8123]",
-  filled: "bg-white rounded-full h-[36px] w-[36px] flex items-center justify-center transition-transform duration-500 ease-in-out group-hover:rotate-45"
-};
-
-const ArrowIcon = ({ className, variant }: { className: string; variant: 'plain' | 'filled' }) => {
-  return variant === 'plain' ? <ButtonArrowwhite className={className} /> : <ButtonArrow className={className} />;
-};
-
 const ArrowButton = ({ variant, route, buttonText }: ArrowButtonProps) => {
   const buttonRef = useRef<HTMLDivElement | null>(null);
-  const [width, setWidth] = useState<number | 'auto'>('auto');
+  const [width, setWidth] = useState('auto'); // Start with auto width
+
+  const buttonBaseStyles = "group h-[44px] flex-row border-[1px] text-[16px] py-1 px-1 font-light rounded-full flex items-center justify-between transition-all duration-500 ease-in-out hover:cursor-pointer overflow-hidden"; // Ensure no overflow
+
+  const buttonVariantStyles = {
+    plain: "bg-white border-gray-300 text-gray-900 hover:bg-gray-700 hover:border-gray-700 hover:text-white",
+    filled: "bg-gray-700 border-gray-700 text-white hover:bg-[#ec8123] hover:border-[#ec8123]",
+  };
+
+  const arrowContainerStyles = {
+    plain: "bg-gray-700 rounded-full h-[36px] w-[36px] flex items-center justify-center transition-transform duration-500 ease-in-out group-hover:rotate-45 group-hover:bg-[#ec8123]",
+    filled: "bg-white rounded-full h-[36px] w-[36px] flex items-center justify-center transition-transform duration-500 ease-in-out group-hover:rotate-45",
+  };
+
+  const ArrowIcon = variant === "plain" ? ButtonArrowwhite : ButtonArrow;
 
   const handleMouseEnter = () => {
     if (buttonRef.current) {
       const currentWidth = buttonRef.current.offsetWidth;
-      setWidth(currentWidth + 25);
+      setWidth(currentWidth + 25); // Increase width by 25px on hover
     }
   };
 
   const handleMouseLeave = () => {
     if (buttonRef.current) {
       const currentWidth = buttonRef.current.offsetWidth;
-      setWidth(currentWidth - 25);
+      setWidth(currentWidth - 25); // Reset width when hover is removed
     }
   };
 
@@ -69,7 +67,7 @@ const ArrowButton = ({ variant, route, buttonText }: ArrowButtonProps) => {
           {buttonText}
         </div>
         <div className={arrowContainerStyles[variant]}>
-          <ArrowIcon className="h-[24px] w-[24px]" variant={variant} />
+          <ArrowIcon className="h-[24px] w-[24px]" />
         </div>
       </div>
     </Link>

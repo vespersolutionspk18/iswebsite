@@ -116,7 +116,7 @@ interface TabButtonProps {
 
 const TabButton = ({ tab, isActive, onClick }: TabButtonProps) => {
   const textRef = useRef<HTMLSpanElement | null>(null);
-  const containerRef = useRef<HTMLButtonElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const [textWidth, setTextWidth] = useState(0);
   const [containerWidth, setContainerWidth] = useState(0);
 
@@ -176,7 +176,7 @@ const SerTabs = () => {
     setIsClient(true);
   }, []);
 
-  const handleClick = (id: string) => {
+  const handleClick = (id) => {
     setActiveTab(id);
   };
 

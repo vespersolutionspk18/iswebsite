@@ -69,7 +69,7 @@ const ArrowButton = ({ variant, route, buttonText }: ArrowButtonProps) => {
           {buttonText}
         </div>
         <div className={arrowContainerStyles[variant]}>
-          <ArrowIcon className="h-[24px] w-[24px]" variant={variant} />
+          <ArrowIcon className="h-[24px] w-[24px]" />
         </div>
       </div>
     </Link>

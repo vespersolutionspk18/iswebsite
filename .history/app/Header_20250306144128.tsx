@@ -5,49 +5,7 @@ import Link from "next/link";
 import { IoIosMenu, IoIosClose } from "react-icons/io";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import ArrowButton from "@/components/ui/ArrowButton";
-import Image from 'next/image';
-
-interface Tab {
-  name: string;
-  content: string;
-  image: string;
-  route: string;
-}
-
-interface BaseSubCategory {
-  name: string;
-  heading: string;
-  subheading: string;
-}
-
-interface TabSubCategory extends BaseSubCategory {
-  tabs: Tab[];
-  directDisplay?: never;
-  displayImage?: never;
-  displayRoute?: never;
-}
-
-interface DirectSubCategory extends BaseSubCategory {
-  directDisplay: boolean;
-  displayImage: string;
-  displayRoute: string;
-  tabs?: never;
-}
-
-type SubCategory = TabSubCategory | DirectSubCategory;
-
-interface StandaloneSection {
-  title: string;
-  heading: string;
-  subheading: string;
-  displayImage: string;
-  displayRoute: string;
-  isTab: boolean;
-}
-
-function isDirectSubCategory(sub: SubCategory): sub is DirectSubCategory {
-  return 'directDisplay' in sub;
-}
+import Image from 'next/image'; // Import the Image component from next/image
 
 const menuData = [
   {
@@ -209,7 +167,7 @@ const menuData = [
         name: "About Integra Strategy",
         heading: "About Integra",
         subheading: "Helping businesses thrive in dynamic markets.",
-        directDisplay: true,
+        directDisplay: true as const,
         displayImage: "/assets/management-consulting.jpg",
         displayRoute: "/about"
       },
@@ -217,7 +175,7 @@ const menuData = [
         name: "Why Choose Us",
         heading: "Why Choose Us",
         subheading: "Discover what makes us stand out",
-        directDisplay: true,
+        directDisplay: true as const,
         displayImage: "/assets/lights.jpg",
         displayRoute: "/about/why-choose-us"
       },
@@ -225,7 +183,7 @@ const menuData = [
         name: "Our Approach & Methodology",
         heading: "Our Approach & Methodology",
         subheading: "Helping businesses thrive in dynamic markets.",
-        directDisplay: true,
+        directDisplay: true as const,
         displayImage: "/assets/post1.jpg",
         displayRoute: "/about/approach-methodology"
       },
@@ -250,21 +208,69 @@ const menuData = [
   },
 ];
 
+// Add these type definitions at the top of the file, after the imports
+interface Tab {
+  name: string;
+  content: string;
+  image: string;
+  route: string;
+}
+
+// Update the SubCategory interface to use discriminated union type
+interface BaseSubCategory {
+  name: string;
+  heading: string;
+  subheading: string;
+}
+
+interface TabSubCategory extends BaseSubCategory {
+  tabs: Tab[];
+  directDisplay?: never;
+  displayImage?: never;
+  displayRoute?: never;
+}
+
+interface DirectSubCategory extends BaseSubCategory {
+  directDisplay: true;
+  displayImage: string;
+  displayRoute: string;
+  tabs?: never;
+}
+
+type SubCategory = TabSubCategory | DirectSubCategory;
+
+// Update the type guard function to ensure directDisplay is strictly true
+function isDirectSubCategory(sub: SubCategory): sub is DirectSubCategory {
+  return 'directDisplay' in sub && sub.directDisplay === true;
+}
+
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [activeSub, setActiveSub] = useState<SubCategory | null>(null);
   const [activeSection, setActiveSection] = useState<Tab | null>(null);
+  // Add this interface with the existing interfaces
+  interface StandaloneSection {
+    title: string;
+    heading: string;
+    subheading: string;
+    displayImage: string;
+    displayRoute: string;
+    isTab: boolean;
+  }
+  // Update the activeStandalone state type
   const [activeStandalone, setActiveStandalone] = useState<StandaloneSection | null>(null);
 
   return (
     <div>
       <header className="fixed top-0 z-[51] w-full">
-        <div className="flex flex-row border-b-[1px] border-b-gray-300 justify-between items-center h-16 bg-white">
+        <div className="flex flex-row border-b-[1px] border-b-gray-300 justify-between items-center h-16 bg-white ">
+          {/* Logo Wrapper */}
           <div className="flex items-center h-full">
             <Link href="/" className="px-5">
               <IntegraLogo className="w-48 h-auto" />
             </Link>
           </div>
+          {/* Menu Icon Button */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             className="border-l-[1px] border-gray-300 p-2 flex items-center justify-center h-full focus:outline-none"
@@ -277,15 +283,17 @@ const Header = () => {
           </button>
         </div>
       </header>
-
+      {/* Full-Screen Menu Overlay */}
       <div
         className={`fixed top-16 left-0 w-full h-[calc(100vh-4rem)] bg-white transition-transform duration-300 ease-in-out ${
           menuOpen ? "translate-y-0" : "-translate-y-full"
         } transform origin-top z-40 flex`}
       >
+        {/* Left Sidebar */}
         <div className="font-sans w-1/4 border-r border-gray-300 flex flex-col">
           {menuOpen && menuData.map((section, index) => (
             <div key={index} className="border-b-[1px] px-3 border-gray-300 py-4">
+              {/* Section Heading (Standalone Tab or Section with Subsections) */}
               {section.isTab ? (
                 <button
                   className="text-left text-2xl font-light text-gray-800 flex justify-between items-center w-full hover:bg-gray-100 transition-all"
@@ -310,9 +318,10 @@ const Header = () => {
                 <h2 className="text-2xl font-light text-gray-800">{section.title}</h2>
               )}
 
-              {section.subCategories && section.subCategories.length > 0 && (
+              {/* Render Subsections for Sections with Subcategories */}
+              {(section.subCategories || []).length > 0 && (
                 <div className="mt-2 flex flex-col">
-                  {section.subCategories.map((sub, idx) => (
+                  {(section.subCategories || []).map((sub, idx) => (
                     <button
                       key={idx}
                       className={`text-left font-light py-2 px-4 text-gray-700 flex justify-between items-center hover:bg-gray-100 transition-all ${
@@ -349,79 +358,79 @@ const Header = () => {
           ))}
         </div>
 
-        {menuOpen && activeSub && (
-          <div className="w-3/4 flex">
-            {!isDirectSubCategory(activeSub) && (
-              <div className="w-[65%] font-sans">
-                <div className="border-b border-gray-300 p-6">
-                  <h2 className="text-3xl font-light">{activeSub.heading}</h2>
-                  <p className="text-black font-light">{activeSub.subheading}</p>
+        {/* Right Drawer */}
+        <div className="w-3/4 flex">
+          {/* Section X */}
+          {menuOpen && activeSub && (
+            <div className="w-[65%] font-sans">
+              <div className="border-b border-gray-300 p-6">
+                <h2 className="text-3xl font-light">{activeSub.heading}</h2>
+                <p className="text-black font-light">{activeSub.subheading}</p>
+              </div>
+              <div className="p-6">
+                <div className="grid grid-cols-2 gap-4">
+                  {activeSub.tabs.map((tab: Tab, idx: number) => (
+                    <div
+                      key={idx}
+                      className={`py-2 px-4 cursor-pointer flex justify-between items-center hover:bg-gray-100 transition-all ${
+                        activeSection?.name === tab.name ? "bg-gray-200" : ""
+                      }`}
+                      onClick={() => setActiveSection(tab)}
+                    >
+                      <span className="font-light text-gray-800">{tab.name}</span>
+                      <MdKeyboardArrowRight className="w-5 h-5 text-black" />
+                    </div>
+                  ))}
                 </div>
-                <div className="p-6">
-                  <div className="grid grid-cols-2 gap-4">
-                    {activeSub.tabs.map((tab: Tab, idx: number) => (
-                      <div
-                        key={idx}
-                        className={`py-2 px-4 cursor-pointer flex justify-between items-center hover:bg-gray-100 transition-all ${
-                          activeSection?.name === tab.name ? "bg-gray-200" : ""
-                        }`}
-                        onClick={() => setActiveSection(tab)}
-                      >
-                        <span className="font-light text-gray-800">{tab.name}</span>
-                        <MdKeyboardArrowRight className="w-5 h-5 text-black" />
-                      </div>
-                    ))}
+              </div>
+            </div>
+          )}
+          {/* Section Y */}
+          {menuOpen && (
+            <div className={`w-[35%] font-sans border-l border-gray-300 p-6 ${!activeSub && 'ml-[65%]'}`}>
+              {activeStandalone && (
+                <>
+                  <Image
+                    src={activeStandalone.displayImage}
+                    alt={activeStandalone.heading}
+                    className="rounded-xl w-full h-64 object-cover"
+                    width={500} // Specify width
+                    height={256} // Specify height
+                  />
+                  <h2 className="text-3xl mt-5 font-sans font-light">{activeStandalone.heading}</h2>
+                  <p className="mt-5 text-black">{activeStandalone.subheading}</p>
+                  <div className="max-w-min mt-5">
+                    <ArrowButton
+                      variant="filled"
+                      route={activeStandalone.displayRoute}
+                      buttonText="Learn More"
+                    />
                   </div>
-                </div>
-              </div>
-            )}
-
-            {menuOpen && (
-              <div className={`w-[35%] font-sans border-l border-gray-300 p-6 ${!activeSub && 'ml-[65%]'}`}>
-                {activeStandalone && (
-                  <>
-                    <Image
-                      src={activeStandalone.displayImage}
-                      alt={activeStandalone.heading}
-                      className="rounded-xl w-full h-64 object-cover"
-                      width={500}
-                      height={256}
+                </>
+              )}
+              {activeSection && (
+                <>
+                  <Image
+                    src={activeSection.image}
+                    alt={activeSection.name}
+                    className="rounded-xl w-full h-64 object-cover"
+                    width={500} // Specify width
+                    height={256} // Specify height
+                  />
+                  <h2 className="text-3xl mt-5 font-sans font-light">{activeSection.name}</h2>
+                  <p className="mt-5 text-black">{activeSection.content}</p>
+                  <div className="max-w-min mt-5">
+                    <ArrowButton
+                      variant="filled"
+                      route={activeSection.route}
+                      buttonText="Learn More"
                     />
-                    <h2 className="text-3xl mt-5 font-sans font-light">{activeStandalone.heading}</h2>
-                    <p className="mt-5 text-black">{activeStandalone.subheading}</p>
-                    <div className="max-w-min mt-5">
-                      <ArrowButton
-                        variant="filled"
-                        route={activeStandalone.displayRoute}
-                        buttonText="Learn More"
-                      />
-                    </div>
-                  </>
-                )}
-                {activeSection && (
-                  <>
-                    <Image
-                      src={activeSection.image}
-                      alt={activeSection.name}
-                      className="rounded-xl w-full h-64 object-cover"
-                      width={500}
-                      height={256}
-                    />
-                    <h2 className="text-3xl mt-5 font-sans font-light">{activeSection.name}</h2>
-                    <p className="mt-5 text-black">{activeSection.content}</p>
-                    <div className="max-w-min mt-5">
-                      <ArrowButton
-                        variant="filled"
-                        route={activeSection.route}
-                        buttonText="Learn More"
-                      />
-                    </div>
-                  </>
-                )}
-              </div>
-            )}
-          </div>
-        )}
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

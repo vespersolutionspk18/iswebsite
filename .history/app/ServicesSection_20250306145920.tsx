@@ -108,16 +108,10 @@ const tabs: Tab[] = [
   },
 ];
 
-interface TabButtonProps {
-  tab: Tab;
-  isActive: boolean;
-  onClick: () => void;
-}
-
-const TabButton = ({ tab, isActive, onClick }: TabButtonProps) => {
-  const textRef = useRef<HTMLSpanElement | null>(null);
-  const containerRef = useRef<HTMLButtonElement | null>(null);
+const TabButton = ({ tab, isActive, onClick }) => {
+  const textRef = useRef(null);
   const [textWidth, setTextWidth] = useState(0);
+  const containerRef = useRef(null);
   const [containerWidth, setContainerWidth] = useState(0);
 
   useEffect(() => {
@@ -176,7 +170,7 @@ const SerTabs = () => {
     setIsClient(true);
   }, []);
 
-  const handleClick = (id: string) => {
+  const handleClick = (id) => {
     setActiveTab(id);
   };
 

@@ -28,7 +28,7 @@ interface TabSubCategory extends BaseSubCategory {
 }
 
 interface DirectSubCategory extends BaseSubCategory {
-  directDisplay: boolean;
+  directDisplay: true;
   displayImage: string;
   displayRoute: string;
   tabs?: never;
@@ -46,7 +46,7 @@ interface StandaloneSection {
 }
 
 function isDirectSubCategory(sub: SubCategory): sub is DirectSubCategory {
-  return 'directDisplay' in sub;
+  return 'directDisplay' in sub && sub.directDisplay === true;
 }
 
 const menuData = [

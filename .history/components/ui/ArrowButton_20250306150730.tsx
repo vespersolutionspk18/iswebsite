@@ -22,7 +22,7 @@ const arrowContainerStyles = {
   filled: "bg-white rounded-full h-[36px] w-[36px] flex items-center justify-center transition-transform duration-500 ease-in-out group-hover:rotate-45"
 };
 
-const ArrowIcon = ({ className, variant }: { className: string; variant: 'plain' | 'filled' }) => {
+const ArrowIcon = ({ className }: { className: string }) => {
   return variant === 'plain' ? <ButtonArrowwhite className={className} /> : <ButtonArrow className={className} />;
 };
 
@@ -69,7 +69,7 @@ const ArrowButton = ({ variant, route, buttonText }: ArrowButtonProps) => {
           {buttonText}
         </div>
         <div className={arrowContainerStyles[variant]}>
-          <ArrowIcon className="h-[24px] w-[24px]" variant={variant} />
+          <ArrowIcon className="h-[24px] w-[24px]" />
         </div>
       </div>
     </Link>
