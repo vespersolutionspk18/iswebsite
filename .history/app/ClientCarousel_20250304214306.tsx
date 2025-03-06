@@ -1,7 +1,7 @@
 import React from 'react';
 import Marquee from 'react-fast-marquee';
 import Image from 'next/image';
-//test
+
 const ClientCarousel = () => {
   const logoSize = { height: 40 };
   const logoStyle = { margin: '0 25px' };
