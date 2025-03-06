@@ -4,7 +4,7 @@ import type { Configuration } from 'webpack';
 const nextConfig = {
   reactStrictMode: true,
   webpack(config: Configuration) {
-    if (config.module?.rules) {
+    if (config.module) {
       config.module.rules.push({
         test: /\.svg$/,
         use: ['@svgr/webpack'],
