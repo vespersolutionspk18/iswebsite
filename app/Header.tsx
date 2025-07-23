@@ -429,13 +429,15 @@ const Header = () => {
                   <h2 className="text-2xl md:text-3xl mt-3 md:mt-5 font-sans font-light">{activeStandalone.heading}</h2>
                   <p className="mt-3 md:mt-5 text-sm md:text-base text-black">{activeStandalone.subheading}</p>
                   <div className="max-w-min mt-3 md:mt-5">
-                    <div onClick={() => setMenuOpen(false)}>
-                      <ArrowButton
-                        variant="filled"
-                        route={activeStandalone.displayRoute}
-                        buttonText="Learn More"
-                      />
-                    </div>
+                    <ArrowButton
+                      variant="filled"
+                      route={activeStandalone.displayRoute}
+                      buttonText="Learn More"
+                      onClick={() => {
+                        console.log('Closing menu, route:', activeStandalone.displayRoute);
+                        setMenuOpen(false);
+                      }}
+                    />
                   </div>
                 </>
               )}
@@ -451,13 +453,12 @@ const Header = () => {
                   <h2 className="text-2xl md:text-3xl mt-3 md:mt-5 font-sans font-light">{activeSection.name}</h2>
                   <p className="mt-3 md:mt-5 text-sm md:text-base text-black">{activeSection.content}</p>
                   <div className="max-w-min mt-3 md:mt-5">
-                    <div onClick={() => setMenuOpen(false)}>
-                      <ArrowButton
-                        variant="filled"
-                        route={activeSection.route}
-                        buttonText="Learn More"
-                      />
-                    </div>
+                    <ArrowButton
+                      variant="filled"
+                      route={activeSection.route}
+                      buttonText="Learn More"
+                      onClick={() => setMenuOpen(false)}
+                    />
                   </div>
                 </>
               )}

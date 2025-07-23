@@ -8,6 +8,7 @@ interface ArrowButtonProps {
   variant: 'plain' | 'filled';
   route: string;
   buttonText: string;
+  onClick?: () => void;
 }
 
 const buttonBaseStyles = "group h-[40px] sm:h-[44px] flex-row text-[14px] sm:text-[16px] py-1 px-1 font-light rounded-full flex items-center justify-between transition-all duration-500 ease-in-out";
@@ -26,7 +27,7 @@ const ArrowIcon = ({ className, variant }: { className: string; variant: 'plain'
   return variant === 'plain' ? <ButtonArrowwhite className={className} /> : <ButtonArrow className={className} />;
 };
 
-const ArrowButton = ({ variant, route, buttonText }: ArrowButtonProps) => {
+const ArrowButton = ({ variant, route, buttonText, onClick }: ArrowButtonProps) => {
   const buttonRef = useRef<HTMLDivElement | null>(null);
   const [width, setWidth] = useState<number | 'auto'>('auto');
   const [isInitialized, setIsInitialized] = useState(false);
@@ -54,8 +55,15 @@ const ArrowButton = ({ variant, route, buttonText }: ArrowButtonProps) => {
     }
   }, [isInitialized]);
 
+  const handleClick = (e: React.MouseEvent) => {
+    console.log('ArrowButton clicked, navigating to:', route);
+    if (onClick) {
+      onClick();
+    }
+  };
+
   return (
-    <Link href={route} passHref>
+    <Link href={route} passHref onClick={handleClick}>
       <div
         ref={buttonRef} // Store the reference to the button
         id="button"
