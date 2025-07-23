@@ -10,7 +10,7 @@ interface ArrowButtonProps {
   buttonText: string;
 }
 
-const buttonBaseStyles = "h-[44px] flex-row text-[16px] py-1 px-1 font-light rounded-full flex items-center justify-between transition-all duration-500 ease-in-out";
+const buttonBaseStyles = "group h-[40px] sm:h-[44px] flex-row text-[14px] sm:text-[16px] py-1 px-1 font-light rounded-full flex items-center justify-between transition-all duration-500 ease-in-out";
 
 const buttonVariantStyles = {
   plain: "bg-white border-[1px] border-gray-300 text-gray-900 hover:bg-gray-700 hover:border-gray-700 hover:text-white",
@@ -18,8 +18,8 @@ const buttonVariantStyles = {
 };
 
 const arrowContainerStyles = {
-  plain: "bg-gray-700 rounded-full h-[36px] w-[36px] flex items-center justify-center transition-transform duration-500 ease-in-out group-hover:rotate-45 group-hover:bg-[#ec8123]",
-  filled: "bg-white rounded-full h-[36px] w-[36px] flex items-center justify-center transition-transform duration-500 ease-in-out group-hover:rotate-45"
+  plain: "bg-gray-700 rounded-full h-[32px] w-[32px] sm:h-[36px] sm:w-[36px] flex items-center justify-center transition-transform duration-500 ease-in-out group-hover:rotate-45 group-hover:bg-[#ec8123]",
+  filled: "bg-white rounded-full h-[32px] w-[32px] sm:h-[36px] sm:w-[36px] flex items-center justify-center transition-transform duration-500 ease-in-out group-hover:rotate-45"
 };
 
 const ArrowIcon = ({ className, variant }: { className: string; variant: 'plain' | 'filled' }) => {
@@ -28,28 +28,23 @@ const ArrowIcon = ({ className, variant }: { className: string; variant: 'plain'
 
 const ArrowButton = ({ variant, route, buttonText }: ArrowButtonProps) => {
   const buttonRef = useRef<HTMLDivElement | null>(null);
-  const [width, setWidth] = useState<number | 'auto'>('auto');
+  const [isHovered, setIsHovered] = useState(false);
+  const [baseWidth, setBaseWidth] = useState<number>(0);
 
   const handleMouseEnter = () => {
-    if (buttonRef.current) {
-      const currentWidth = buttonRef.current.offsetWidth;
-      setWidth(currentWidth + 25);
-    }
+    setIsHovered(true);
   };
 
   const handleMouseLeave = () => {
-    if (buttonRef.current) {
-      const currentWidth = buttonRef.current.offsetWidth;
-      setWidth(currentWidth - 25);
-    }
+    setIsHovered(false);
   };
 
   useEffect(() => {
-    // Initialize width when component mounts
-    if (buttonRef.current) {
-      setWidth(buttonRef.current.offsetWidth);
+    // Capture the natural width when component mounts
+    if (buttonRef.current && baseWidth === 0) {
+      setBaseWidth(buttonRef.current.offsetWidth);
     }
-  }, []);
+  }, [buttonText, baseWidth]);
 
   return (
     <Link href={route} passHref>
@@ -58,18 +53,17 @@ const ArrowButton = ({ variant, route, buttonText }: ArrowButtonProps) => {
         id="button"
         className={`${buttonBaseStyles} ${buttonVariantStyles[variant]}`}
         style={{
-          width: width, // Set width dynamically based on state
-          minWidth: 'fit-content', // Allow content to set the width
+          width: isHovered && baseWidth > 0 ? `${baseWidth + 25}px` : 'fit-content', // Grow on hover, fit-content by default
           transition: "width 0.5s ease-in-out, background-color 0.5s ease-in-out, border-color 0.5s ease-in-out", // Smooth transition for width
         }}
-        onMouseEnter={handleMouseEnter} // Increase width on hover
-        onMouseLeave={handleMouseLeave} // Reset width when hover is removed
+        onMouseEnter={handleMouseEnter} // Set hover state
+        onMouseLeave={handleMouseLeave} // Reset hover state
       >
         <div className="mx-3 font-sans font-regular" style={{ whiteSpace: "nowrap" }}>
           {buttonText}
         </div>
         <div className={arrowContainerStyles[variant]}>
-          <ArrowIcon className="h-[24px] w-[24px]" variant={variant} />
+          <ArrowIcon className="h-[20px] w-[20px] sm:h-[24px] sm:w-[24px]" variant={variant} />
         </div>
       </div>
     </Link>

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import IntegraLogo from "@/public/assets/int-logo.svg";
 import Link from "next/link";
 import { IoIosMenu, IoIosClose } from "react-icons/io";
@@ -255,40 +255,69 @@ const Header = () => {
   const [activeSub, setActiveSub] = useState<SubCategory | null>(null);
   const [activeSection, setActiveSection] = useState<Tab | null>(null);
   const [activeStandalone, setActiveStandalone] = useState<StandaloneSection | null>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
+
+    if (menuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [menuOpen]);
+
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [menuOpen]);
 
   return (
-    <div>
+    <div ref={menuRef}>
       <header className="fixed top-0 z-[51] w-full">
-        <div className="flex flex-row border-b-[1px] border-b-gray-300 justify-between items-center h-16 bg-white">
+        <div className="flex flex-row border-b-[1px] border-b-gray-300 justify-between items-center h-14 md:h-16 bg-white">
           <div className="flex items-center h-full">
-            <Link href="/" className="px-5">
-              <IntegraLogo className="w-48 h-auto" />
+            <Link href="/" className="px-3 md:px-5">
+              <IntegraLogo className="w-36 md:w-48 h-auto" />
             </Link>
           </div>
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="border-l-[1px] border-gray-300 p-2 flex items-center justify-center h-full focus:outline-none"
+            className="border-l-[1px] border-gray-300 p-2 md:p-3 flex items-center justify-center h-full focus:outline-none"
           >
             {menuOpen ? (
-              <IoIosClose className="w-12 h-12 fill-gray-800 stroke-gray-600" />
+              <IoIosClose className="w-8 h-8 md:w-12 md:h-12 fill-gray-800 stroke-gray-600" />
             ) : (
-              <IoIosMenu className="w-12 h-12 fill-gray-800 stroke-gray-600" />
+              <IoIosMenu className="w-8 h-8 md:w-12 md:h-12 fill-gray-800 stroke-gray-600" />
             )}
           </button>
         </div>
       </header>
 
       <div
-        className={`fixed top-16 left-0 w-full h-[calc(100vh-4rem)] bg-white transition-transform duration-300 ease-in-out ${
+        className={`fixed top-14 md:top-16 left-0 w-full h-[calc(100vh-3.5rem)] md:h-[calc(100vh-4rem)] bg-white transition-transform duration-300 ease-in-out ${
           menuOpen ? "translate-y-0" : "-translate-y-full"
-        } transform origin-top z-40 flex justify-between`}
+        } transform origin-top z-40 flex flex-col md:flex-row`}
       >
-        <div className="font-sans w-1/4 border-r border-gray-300 flex flex-col">
+        <div className="font-sans w-full md:w-1/4 border-b md:border-b-0 md:border-r border-gray-300 flex flex-col overflow-y-auto max-h-[50vh] md:max-h-full">
           {menuOpen && menuData.map((section, index) => (
-            <div key={index} className="border-b-[1px] px-3 border-gray-300 py-4">
+            <div key={index} className="border-b-[1px] px-4 md:px-3 border-gray-300 py-3 md:py-4">
               {section.isTab ? (
                 <button
-                  className="text-left text-2xl font-light text-gray-800 flex justify-between items-center w-full hover:bg-gray-100 transition-all"
+                  className="text-left text-xl md:text-2xl font-light text-gray-800 flex justify-between items-center w-full hover:bg-gray-100 transition-all p-2 md:p-0"
                   onClick={() => {
                     setActiveSub(null);
                     setActiveSection(null);
@@ -301,13 +330,16 @@ const Header = () => {
                       isTab: section.isTab,
                     };
                     setActiveStandalone(standaloneSection);
+                    if (window.innerWidth < 768) {
+                      window.location.href = section.displayRoute || '';
+                    }
                   }}
                 >
                   {section.title}
                   <MdKeyboardArrowRight className="w-5 h-5 text-black" />
                 </button>
               ) : (
-                <h2 className="text-2xl font-light text-gray-800">{section.title}</h2>
+                <h2 className="text-xl md:text-2xl font-light text-gray-800">{section.title}</h2>
               )}
 
               {section.subCategories && section.subCategories.length > 0 && (
@@ -315,7 +347,7 @@ const Header = () => {
                   {section.subCategories.map((sub, idx) => (
                     <button
                       key={idx}
-                      className={`text-left font-light py-2 px-4 text-gray-700 flex justify-between items-center hover:bg-gray-100 transition-all ${
+                      className={`text-left text-sm md:text-base font-light py-2 px-4 text-gray-700 flex justify-between items-center hover:bg-gray-100 transition-all ${
                         activeSub?.name === sub.name ? "bg-gray-200" : ""
                       }`}
                       onClick={() => {
@@ -331,6 +363,9 @@ const Header = () => {
                           setActiveStandalone(standaloneSection);
                           setActiveSub(null);
                           setActiveSection(null);
+                          if (window.innerWidth < 768) {
+                            window.location.href = sub.displayRoute;
+                          }
                         } else {
                           const tabSub = sub as TabSubCategory;
                           setActiveSub(tabSub);
@@ -350,24 +385,29 @@ const Header = () => {
         </div>
 
         {menuOpen && (activeSub || activeStandalone) && (
-          <div className="w-3/4 flex justify-end">
+          <div className="w-full md:w-3/4 flex flex-col md:flex-row md:justify-end overflow-y-auto">
             {!isDirectSubCategory(activeSub) && activeSub && (
-              <div className="w-[65%] font-sans border-r border-gray-300">
-                <div className="border-b border-gray-300 p-6">
-                  <h2 className="text-3xl font-light">{activeSub.heading}</h2>
-                  <p className="text-black font-light">{activeSub.subheading}</p>
+              <div className="w-full md:w-[65%] font-sans border-b md:border-b-0 md:border-r border-gray-300">
+                <div className="border-b border-gray-300 p-4 md:p-6">
+                  <h2 className="text-2xl md:text-3xl font-light">{activeSub.heading}</h2>
+                  <p className="text-sm md:text-base text-black font-light">{activeSub.subheading}</p>
                 </div>
-                <div className="p-6">
-                  <div className="grid grid-cols-2 gap-4">
+                <div className="p-4 md:p-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4">
                     {activeSub.tabs.map((tab: Tab, idx: number) => (
                       <div
                         key={idx}
-                        className={`py-2 px-4 cursor-pointer flex justify-between items-center hover:bg-gray-100 transition-all ${
+                        className={`py-3 md:py-2 px-4 cursor-pointer flex justify-between items-center hover:bg-gray-100 transition-all ${
                           activeSection?.name === tab.name ? "bg-gray-200" : ""
                         }`}
-                        onClick={() => setActiveSection(tab)}
+                        onClick={() => {
+                          setActiveSection(tab);
+                          if (window.innerWidth < 768) {
+                            window.location.href = tab.route;
+                          }
+                        }}
                       >
-                        <span className="font-light text-gray-800">{tab.name}</span>
+                        <span className="text-sm md:text-base font-light text-gray-800">{tab.name}</span>
                         <MdKeyboardArrowRight className="w-5 h-5 text-black" />
                       </div>
                     ))}
@@ -376,24 +416,26 @@ const Header = () => {
               </div>
             )}
 
-            <div className={`w-[35%] font-sans border-l border-gray-300 p-6`}>
+            <div className={`w-full md:w-[35%] font-sans md:border-l border-gray-300 p-4 md:p-6`}>
               {activeStandalone && (
                 <>
                   <Image
                     src={activeStandalone.displayImage}
                     alt={activeStandalone.heading}
-                    className="rounded-xl w-full h-64 object-cover"
+                    className="rounded-xl w-full h-48 md:h-64 object-cover"
                     width={500}
                     height={256}
                   />
-                  <h2 className="text-3xl mt-5 font-sans font-light">{activeStandalone.heading}</h2>
-                  <p className="mt-5 text-black">{activeStandalone.subheading}</p>
-                  <div className="max-w-min mt-5">
-                    <ArrowButton
-                      variant="filled"
-                      route={activeStandalone.displayRoute}
-                      buttonText="Learn More"
-                    />
+                  <h2 className="text-2xl md:text-3xl mt-3 md:mt-5 font-sans font-light">{activeStandalone.heading}</h2>
+                  <p className="mt-3 md:mt-5 text-sm md:text-base text-black">{activeStandalone.subheading}</p>
+                  <div className="max-w-min mt-3 md:mt-5">
+                    <div onClick={() => setMenuOpen(false)}>
+                      <ArrowButton
+                        variant="filled"
+                        route={activeStandalone.displayRoute}
+                        buttonText="Learn More"
+                      />
+                    </div>
                   </div>
                 </>
               )}
@@ -402,18 +444,20 @@ const Header = () => {
                   <Image
                     src={activeSection.image}
                     alt={activeSection.name}
-                    className="rounded-xl w-full h-64 object-cover"
+                    className="rounded-xl w-full h-48 md:h-64 object-cover"
                     width={500}
                     height={256}
                   />
-                  <h2 className="text-3xl mt-5 font-sans font-light">{activeSection.name}</h2>
-                  <p className="mt-5 text-black">{activeSection.content}</p>
-                  <div className="max-w-min mt-5">
-                    <ArrowButton
-                      variant="filled"
-                      route={activeSection.route}
-                      buttonText="Learn More"
-                    />
+                  <h2 className="text-2xl md:text-3xl mt-3 md:mt-5 font-sans font-light">{activeSection.name}</h2>
+                  <p className="mt-3 md:mt-5 text-sm md:text-base text-black">{activeSection.content}</p>
+                  <div className="max-w-min mt-3 md:mt-5">
+                    <div onClick={() => setMenuOpen(false)}>
+                      <ArrowButton
+                        variant="filled"
+                        route={activeSection.route}
+                        buttonText="Learn More"
+                      />
+                    </div>
                   </div>
                 </>
               )}
