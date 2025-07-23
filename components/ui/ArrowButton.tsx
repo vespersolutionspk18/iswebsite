@@ -28,23 +28,31 @@ const ArrowIcon = ({ className, variant }: { className: string; variant: 'plain'
 
 const ArrowButton = ({ variant, route, buttonText }: ArrowButtonProps) => {
   const buttonRef = useRef<HTMLDivElement | null>(null);
-  const [isHovered, setIsHovered] = useState(false);
-  const [baseWidth, setBaseWidth] = useState<number>(0);
+  const [width, setWidth] = useState<number | 'auto'>('auto');
+  const [isInitialized, setIsInitialized] = useState(false);
 
   const handleMouseEnter = () => {
-    setIsHovered(true);
+    if (buttonRef.current && isInitialized) {
+      const currentWidth = buttonRef.current.offsetWidth;
+      setWidth(currentWidth + 25);
+    }
   };
 
   const handleMouseLeave = () => {
-    setIsHovered(false);
+    if (buttonRef.current && isInitialized) {
+      const currentWidth = buttonRef.current.offsetWidth;
+      setWidth(currentWidth - 25);
+    }
   };
 
   useEffect(() => {
-    // Capture the natural width when component mounts
-    if (buttonRef.current && baseWidth === 0) {
-      setBaseWidth(buttonRef.current.offsetWidth);
+    // Initialize width after component mounts to ensure smooth transitions
+    if (buttonRef.current && !isInitialized) {
+      const initialWidth = buttonRef.current.offsetWidth;
+      setWidth(initialWidth);
+      setIsInitialized(true);
     }
-  }, [buttonText, baseWidth]);
+  }, [isInitialized]);
 
   return (
     <Link href={route} passHref>
@@ -53,11 +61,11 @@ const ArrowButton = ({ variant, route, buttonText }: ArrowButtonProps) => {
         id="button"
         className={`${buttonBaseStyles} ${buttonVariantStyles[variant]}`}
         style={{
-          width: isHovered && baseWidth > 0 ? `${baseWidth + 25}px` : 'fit-content', // Grow on hover, fit-content by default
+          width: width === 'auto' ? 'fit-content' : `${width}px`, // Use fit-content initially, then numeric width
           transition: "width 0.5s ease-in-out, background-color 0.5s ease-in-out, border-color 0.5s ease-in-out", // Smooth transition for width
         }}
-        onMouseEnter={handleMouseEnter} // Set hover state
-        onMouseLeave={handleMouseLeave} // Reset hover state
+        onMouseEnter={handleMouseEnter} // Increase width on hover
+        onMouseLeave={handleMouseLeave} // Reset width when hover is removed
       >
         <div className="mx-3 font-sans font-regular" style={{ whiteSpace: "nowrap" }}>
           {buttonText}
